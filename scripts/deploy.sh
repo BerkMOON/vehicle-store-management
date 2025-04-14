@@ -29,7 +29,7 @@ fi
 
 SERVER_USER="root"
 SERVER_PATH="/usr/web/vehicle-store-management"
-TEMP_PATH="/usr/web/temp_vehicle"
+TEMP_PATH="/usr/web/temp_vehicle_store"
 
 # 打包项目
 echo "开始打包..."

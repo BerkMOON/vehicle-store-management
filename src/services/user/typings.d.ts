@@ -1,26 +1,18 @@
 export interface UserInfo {
-  id: string;
-  username: string;
+  company_name: string;
+  create_time: string;
+  email: string;
   header_img: string;
+  modify_time: string;
   nickname: string;
   phone: string;
-  email: string;
-  company: string;
-  department: string;
-  user_id: string;
-  role_name?: string;
-}
-
-export interface InterfaceResult<T> {
-  response_status: {
+  role: string;
+  status: {
     code: number;
-    msg: string;
-    extension: {
-      key: string;
-      value: string;
-    }[];
+    name: string;
   };
-  data?: T;
+  store_name: string;
+  username: string;
 }
 
 export interface AuthorityInfo {

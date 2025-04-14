@@ -1,4 +1,4 @@
-import { UserSelfInfo } from '@/services/user/typings';
+import { UserInfo } from '@/services/user/typings';
 import { UserAPI } from '@/services/user/UserController';
 import { LogoutOutlined } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     <>
       <Dropdown menu={{ items }} placement="topLeft">
         <div className={styles['login-info']}>
-          {(initialState as UserSelfInfo)?.user_info?.username}
+          {(initialState as UserInfo)?.username}
         </div>
       </Dropdown>
     </>

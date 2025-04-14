@@ -2,13 +2,13 @@
 import { Button, Result } from 'antd';
 import Login from './components/BasicComponents/Login/Login';
 import iconPng from './favicon.jpeg';
-import { UserSelfInfo } from './services/user/typings';
+import { UserInfo } from './services/user/typings';
 import { UserAPI } from './services/user/UserController';
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState(): Promise<
-  (UserSelfInfo & { isLogin: boolean }) | { isLogin: boolean }
+  (UserInfo & { isLogin: boolean }) | { isLogin: boolean }
 > {
   try {
     const userInfo = await UserAPI.getUserDetail();
@@ -27,7 +27,7 @@ export async function getInitialState(): Promise<
 export const layout = ({
   initialState,
 }: {
-  initialState: (UserSelfInfo & { isLogin: boolean }) | { isLogin: boolean };
+  initialState: (UserInfo & { isLogin: boolean }) | { isLogin: boolean };
 }) => {
   const { isLogin } = initialState;
   return {

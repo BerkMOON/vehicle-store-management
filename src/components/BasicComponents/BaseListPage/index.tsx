@@ -14,6 +14,7 @@ interface BaseListPageProps<T = any, U = any> {
   columns: TableProps<T>['columns'];
   searchFormItems?: React.ReactNode;
   defaultSearchParams?: U;
+  searchParamsTransform?: (params: any) => any;
   fetchData: (params: { page: number; limit: number } & U) => Promise<{
     list: T[];
     total: number;
@@ -41,6 +42,7 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
       title,
       columns,
       searchFormItems,
+      searchParamsTransform,
       defaultSearchParams = {} as any,
       fetchData,
       createButton,
@@ -86,7 +88,11 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
 
     const handleSearch = useCallback(
       (values: any) => {
-        fetchTableData({ page: 1, limit: pageInfo.limit, ...values });
+        let searchParams = { ...values };
+        if (searchParamsTransform) {
+          searchParams = searchParamsTransform(values);
+        }
+        fetchTableData({ page: 1, limit: pageInfo.limit, ...searchParams });
       },
       [fetchTableData, pageInfo.limit],
     );
@@ -102,22 +108,31 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
 
     const handlePageChange = useCallback(
       (page: number, pageSize: number) => {
+        let formValues = form.getFieldsValue();
+        if (searchParamsTransform) {
+          formValues = searchParamsTransform(formValues);
+        }
         fetchTableData({
           page,
           limit: pageSize,
-          ...form.getFieldsValue(),
+          ...formValues,
         });
       },
       [fetchTableData, form],
     );
 
     useImperativeHandle(ref, () => ({
-      getData: () =>
+      getData: () => {
+        let formValues = form.getFieldsValue();
+        if (searchParamsTransform) {
+          formValues = searchParamsTransform(formValues);
+        }
         fetchTableData({
           page: pageInfo.page,
           limit: pageInfo.limit,
-          ...form.getFieldsValue(),
-        }),
+          formValues,
+        });
+      },
     }));
 
     return (

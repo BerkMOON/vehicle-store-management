@@ -9,7 +9,7 @@ import type {
   UserSelfInfo,
 } from './typings';
 
-const API_PREFIX_ADMIN = '/api/admin';
+const API_PREFIX_ADMIN = '/api/business';
 const API_PREFIX = `${API_PREFIX_ADMIN}/user`;
 
 export const UserAPI = {

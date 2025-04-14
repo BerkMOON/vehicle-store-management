@@ -42,3 +42,17 @@ export const STATUS_OPTIONS = [
   { label: STATUS_LABEL.ACTIVE, value: COMMON_STATUS.ACTIVE },
   { label: STATUS_LABEL.DELETED, value: COMMON_STATUS.DELETED },
 ];
+
+export enum Role {
+  Support = 'support',
+  SupportDirector = 'supportDirector',
+  Admin = 'admin',
+  Finance = 'finance',
+}
+
+export const ROLES_INFO = {
+  [Role.Support]: '外拓专员',
+  [Role.SupportDirector]: '售后总监',
+  [Role.Admin]: '店长',
+  [Role.Finance]: '财务',
+};
