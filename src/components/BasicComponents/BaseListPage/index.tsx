@@ -15,7 +15,13 @@ interface BaseListPageProps<T = any, U = any> {
   searchFormItems?: React.ReactNode;
   defaultSearchParams?: U;
   searchParamsTransform?: (params: any) => any;
-  fetchData: (params: { page: number; limit: number } & U) => Promise<{
+  fetchData: (
+    params: (
+      | { page: number; limit: number }
+      | { offset: number; limit: number }
+    ) &
+      U,
+  ) => Promise<{
     list: T[];
     total: number;
   }>;
@@ -24,6 +30,7 @@ interface BaseListPageProps<T = any, U = any> {
     onClick: () => void;
   };
   extraButtons?: React.ReactNode;
+  isOffset?: boolean;
 }
 
 export interface BaseListPageRef {
@@ -47,6 +54,7 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
       fetchData,
       createButton,
       extraButtons,
+      isOffset = false,
     } = props;
 
     const [loading, setLoading] = useState(false);
@@ -62,7 +70,21 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
       async (params: { page: number; limit: number } & any) => {
         setLoading(true);
         try {
-          const result = await fetchData(params);
+          let requestParams: any;
+          if (isOffset) {
+            // 使用 offset/limit 分页
+            const { page, limit, ...otherParams } = params;
+            requestParams = {
+              offset: (page - 1) * limit,
+              limit,
+              ...otherParams,
+            };
+          } else {
+            // 使用 page/limit 分页
+            requestParams = params;
+          }
+
+          const result = await fetchData(requestParams);
           setData(result.list);
           setPageInfo({
             page: params.page,
@@ -75,7 +97,7 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
           setLoading(false);
         }
       },
-      [fetchData],
+      [fetchData, isOffset],
     );
 
     useEffect(() => {

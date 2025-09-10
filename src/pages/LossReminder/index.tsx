@@ -3,21 +3,20 @@ import BaseListPage, {
 } from '@/components/BasicComponents/BaseListPage';
 import { DeviceAPI } from '@/services/device/DeviceController';
 import { Navigate, useAccess } from '@umijs/max';
-import { Result } from 'antd';
 import React, { useRef } from 'react';
 import { getColumns } from './colums';
 import { searchForm } from './searchForm';
 
 const TableList: React.FC = () => {
-  const { isLogin, isAdmin } = useAccess();
+  const { isLogin } = useAccess();
   const baseListRef = useRef<BaseListPageRef>(null);
 
   const columns = getColumns();
 
   const fetchUserData = async (params: any) => {
-    const { data } = await DeviceAPI.getDeviceList(params);
+    const { data } = await DeviceAPI.getLossNotifications(params);
     return {
-      list: data.device_list,
+      list: data.record_list,
       total: data.meta.total_count,
     };
   };
@@ -26,18 +25,12 @@ const TableList: React.FC = () => {
     return <Navigate to="/login" />;
   }
 
-  if (!isAdmin) {
-    return <Result status="403" title="403" subTitle="无权限访问" />;
-  }
-
   const searchParamsTransform = (params: any) => {
-    const { bind_time, onset_time, ...rest } = params;
+    const { loss_time, ...rest } = params;
     return {
       ...rest,
-      bind_start_time: bind_time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
-      bind_end_time: bind_time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
-      onset_start_time: onset_time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
-      onset_end_time: onset_time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
+      start_time: loss_time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
+      end_time: loss_time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
     };
   };
 
@@ -45,14 +38,11 @@ const TableList: React.FC = () => {
     <>
       <BaseListPage
         ref={baseListRef}
-        title="设备列表页面"
+        title="流失提醒页面"
         columns={columns}
         searchFormItems={searchForm}
         searchParamsTransform={searchParamsTransform}
         fetchData={fetchUserData}
-        defaultSearchParams={{
-          store_id: 1,
-        }}
       />
     </>
   );

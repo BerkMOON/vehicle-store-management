@@ -35,9 +35,34 @@ export default defineConfig({
       access: 'isAdmin',
     },
     {
-      name: '看板',
-      path: '/dashboard',
-      component: './Dashboard',
+      name: '流失提醒',
+      path: '/loss-reminder',
+      component: './LossReminder',
+      access: 'isAdmin',
+    },
+    {
+      name: '里程提醒',
+      path: '/mileage-reminder',
+      component: './MileageReminder',
+      access: 'isAdmin',
+    },
+    {
+      path: '/auditList',
+      name: '工单列表',
+      component: './AuditList',
+      access: 'isAdmin',
+    },
+    {
+      path: '/auditDetail/:clueId',
+      name: '工单详情',
+      component: './AuditList/Detail',
+      hideInMenu: true,
+      access: 'isAdmin',
+    },
+    {
+      path: '/unused-device',
+      name: '失效设备',
+      component: './UnusedDevice',
       access: 'isAdmin',
     },
   ],
@@ -45,12 +70,9 @@ export default defineConfig({
   proxy: {
     '/api': {
       // 标识需要进行转换的请求的url
-      target: 'http://47.121.134.143:8888', // 服务端域名
-      changeOrigin: true, // 允许域名进行转换
-    },
-    '/admin': {
-      // 标识需要进行转换的请求的url
-      target: 'http://47.121.134.143:8888', // 服务端域名
+      // target: 'http://192.168.8.232:8888',
+      target: 'https://eda-store-test.ai-kaka.com:443',
+      // target: 'https://eda-store-backend.ai-kaka.com:443', // 服务端域名
       changeOrigin: true, // 允许域名进行转换
     },
   },

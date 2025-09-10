@@ -1,13 +1,7 @@
 /* eslint-disable */
-// 该文件由 OneAPI 自动生成，请勿手动修改！
 import { ResponseInfoType } from '@/types/common';
 import { request } from '@umijs/max';
-import type {
-  ModifyRoleParams,
-  PageInfo_UserInfo,
-  UserInfo,
-  UserSelfInfo,
-} from './typings';
+import type { ModifyRoleParams, PageInfo_UserInfo, UserInfo } from './typings';
 
 const API_PREFIX_ADMIN = '/api/business';
 const API_PREFIX = `${API_PREFIX_ADMIN}/user`;
@@ -29,7 +23,7 @@ export const UserAPI = {
    * GET /api/getSelfInfo
    */
   getUserDetail: () =>
-    request<ResponseInfoType<UserSelfInfo>>(`${API_PREFIX_ADMIN}/getSelfInfo`, {
+    request<ResponseInfoType<UserInfo>>(`${API_PREFIX_ADMIN}/getSelfInfo`, {
       method: 'GET',
     }),
 

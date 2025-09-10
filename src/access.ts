@@ -1,4 +1,5 @@
-import { Role } from './constants';
+// import { Role } from './constants';
+import { ACCESS_ROLE } from './constants';
 import { UserInfo } from './services/user/typings';
 
 export default (initialState: UserInfo & { isLogin: boolean }) => {
@@ -7,6 +8,8 @@ export default (initialState: UserInfo & { isLogin: boolean }) => {
 
   return {
     isLogin: !!initialState?.isLogin,
-    isAdmin: initialState?.role === Role.Admin,
+    isAdmin: !!initialState?.role_list?.find((item) =>
+      ACCESS_ROLE.includes(item?.role),
+    ),
   };
 };

@@ -3,6 +3,7 @@ import { UserAPI } from '@/services/user/UserController';
 import { LogoutOutlined } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
 import { Dropdown } from 'antd';
+import StoreSelector from '../StoreSelector';
 import styles from './Login.scss';
 
 const Login: React.FC = () => {
@@ -26,13 +27,14 @@ const Login: React.FC = () => {
   ];
 
   return (
-    <>
+    <div className={styles['login-container']}>
+      <StoreSelector />
       <Dropdown menu={{ items }} placement="topLeft">
         <div className={styles['login-info']}>
           {(initialState as UserInfo)?.username}
         </div>
       </Dropdown>
-    </>
+    </div>
   );
 };
 

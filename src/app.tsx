@@ -18,6 +18,20 @@ export async function getInitialState(): Promise<
     const userInfo = await UserAPI.getUserDetail();
     const { data } = userInfo;
     if (data) {
+      // 如果用户有角色列表且没有保存的当前门店，初始化默认选择第一个
+      if (data.role_list && data.role_list.length > 0) {
+        const saved = localStorage.getItem('currentStore');
+        if (!saved) {
+          const firstRole = data.role_list[0];
+          const defaultStore = {
+            companyId: firstRole.company_id,
+            companyName: firstRole.company_name,
+            storeId: firstRole.store_id,
+            storeName: firstRole.store_name,
+          };
+          localStorage.setItem('currentStore', JSON.stringify(defaultStore));
+        }
+      }
       return { ...data, isLogin: true };
     } else {
       return { isLogin: false };
@@ -30,6 +44,26 @@ export async function getInitialState(): Promise<
 
 export const request = {
   timeout: 10000,
+  requestInterceptors: [
+    (config: any) => {
+      // 只对自己的API添加自定义header，跳过第三方API
+      const url = config.url || '';
+      const isThirdPartyAPI = url.includes('amap.com');
+      if (!isThirdPartyAPI || url.includes(window.location.host)) {
+        // 从localStorage获取当前选中的门店和公司信息
+        const currentStore = localStorage.getItem('currentStore');
+        if (currentStore) {
+          const store = JSON.parse(currentStore);
+          config.headers = {
+            ...config.headers,
+            'X-Company-Id': store.companyId,
+            'X-Store-Id': store.storeId,
+          };
+        }
+      }
+      return config;
+    },
+  ],
   errorConfig: {
     errorHandler: (error: any) => {
       // 统一错误处理

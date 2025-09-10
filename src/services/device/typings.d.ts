@@ -15,7 +15,7 @@ export interface DeviceList {
 }
 
 export interface DeviceRequest extends PageInfoParams {
-  unreported?: boolean;
+  report_status?: string;
   endTime?: string;
   phone?: string;
   sn?: string;
@@ -25,4 +25,71 @@ export interface DeviceRequest extends PageInfoParams {
    */
   status?: string;
   vin?: string;
+}
+
+export interface LossRequest extends PageInfoParams {
+  sn?: string;
+  device_id?: string;
+  start_time?: string;
+  end_time?: string;
+}
+
+export interface LossInfo {
+  company_name?: string;
+  device_id?: string;
+  location?: string;
+  nearby_points?: NearbyPoint[];
+  sn?: string;
+  store_name?: string;
+  trigger_time?: string;
+  car_model?: string;
+  phone?: string;
+}
+
+export interface NearbyPoint {
+  address: string;
+  city: string;
+  distance: number | number;
+  district: string;
+  name: string;
+}
+
+export interface LossResponse extends BaseListInfo {
+  record_list: LossInfo[];
+}
+
+export interface MileageReminderRequest extends PageInfoParams {
+  company_id?: number;
+  mileage?: number;
+  sn?: string;
+  store_id?: number;
+}
+
+export interface MileageReminderInfo {
+  company_name?: string;
+  device_id?: string;
+  id?: number;
+  mileage?: number;
+  phone?: string;
+  sn?: string;
+  store_name?: string;
+  brand?: string;
+  car_model?: string;
+}
+export interface MileageReminderResponse extends BaseListInfo {
+  item_list: MileageReminderInfo[];
+}
+
+export interface UnusedDeivceInfo {
+  company_name?: string;
+  device_id?: string;
+  mtime?: string;
+  onset_time?: string;
+  phone?: string;
+  sn?: string;
+  store_name?: string;
+}
+
+export interface UnusedDeviceResponse extends BaseListInfo {
+  record_list: UnusedDeivceInfo[];
 }

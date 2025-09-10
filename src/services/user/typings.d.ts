@@ -13,6 +13,15 @@ export interface UserInfo {
   };
   store_name: string;
   username: string;
+  role_list: RoleList[];
+}
+
+export interface RoleList {
+  company_id: number;
+  company_name: string;
+  role: Role;
+  store_id: number;
+  store_name: string;
 }
 
 export interface AuthorityInfo {
