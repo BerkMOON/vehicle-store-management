@@ -5,6 +5,7 @@ import { DeviceAPI } from '@/services/device/DeviceController';
 import { Navigate, useAccess } from '@umijs/max';
 import React, { useRef } from 'react';
 import { getColumns } from './colums';
+import { searchForm } from './searchForm';
 
 const TableList: React.FC = () => {
   const { isLogin } = useAccess();
@@ -28,10 +29,13 @@ const TableList: React.FC = () => {
     <>
       <BaseListPage
         ref={baseListRef}
-        title="失效设备页面"
+        title="未上线设备页面"
         columns={columns}
-        searchFormItems={null}
         fetchData={fetchUserData}
+        searchFormItems={searchForm}
+        defaultSearchParams={{
+          before_days: 10,
+        }}
       />
     </>
   );

@@ -48,7 +48,7 @@ export default defineConfig({
     },
     {
       path: '/auditList',
-      name: '工单列表',
+      name: '事故列表',
       component: './AuditList',
       access: 'isAdmin',
     },
@@ -61,7 +61,7 @@ export default defineConfig({
     },
     {
       path: '/unused-device',
-      name: '失效设备',
+      name: '未上线设备',
       component: './UnusedDevice',
       access: 'isAdmin',
     },
