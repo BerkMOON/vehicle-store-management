@@ -34,3 +34,38 @@ export const getColumns = () => {
     },
   ];
 };
+
+export const MileageNameMap = [
+  {
+    key: 'store_name',
+    name: '门店',
+    width: 20,
+  },
+  {
+    key: 'sn',
+    name: '设备号',
+    width: 18,
+  },
+  {
+    key: 'brand',
+    name: '品牌',
+    width: 10,
+  },
+  {
+    key: 'car_model',
+    name: '用户车型',
+    width: 15,
+  },
+  {
+    name: '用户里程(km)',
+    key: (mileageInfo: MileageReminderInfo) => {
+      return mileageInfo?.mileage?.toFixed(2) + ' km';
+    },
+    width: 15,
+  },
+  {
+    key: 'phone',
+    name: '手机号',
+    width: 13,
+  },
+];

@@ -26,3 +26,36 @@ export const getColumns = () => {
     },
   ];
 };
+
+export const UnusedDeviceNameMap = [
+  {
+    key: 'sn',
+    name: '设备号',
+    width: 25,
+  },
+  {
+    key: 'brand',
+    name: '品牌',
+    width: 10,
+  },
+  {
+    key: 'car_model',
+    name: '用户车型',
+    width: 15,
+  },
+  {
+    key: 'phone',
+    name: '用户手机号',
+    width: 15,
+  },
+  {
+    key: 'onset_time',
+    name: '首次上报时间',
+    width: 20,
+  },
+  {
+    key: 'mtime',
+    name: '最后上报时间',
+    width: 20,
+  },
+];

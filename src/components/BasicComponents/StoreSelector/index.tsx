@@ -14,8 +14,6 @@ const StoreSelector: React.FC = () => {
   const userInfo = initialState as UserInfo & { isLogin: boolean };
   const roleList = userInfo.role_list || [];
 
-  if (roleList.length <= 1) return null; // 如果只有一个选择就不显示切换器
-
   const handleMenuClick = ({ key }: { key: string }) => {
     const [companyId, storeId] = key.split('-');
     const selectedRole = roleList.find(
@@ -43,15 +41,21 @@ const StoreSelector: React.FC = () => {
 
   return (
     <div className={styles.storeSelector}>
-      <Dropdown
-        menu={{ items, onClick: handleMenuClick }}
-        trigger={['click']}
-        placement="bottomLeft"
-      >
+      {roleList.length <= 1 ? (
         <Button type="text" className={styles.selector}>
-          {currentLabel} <DownOutlined />
+          {currentLabel}
         </Button>
-      </Dropdown>
+      ) : (
+        <Dropdown
+          menu={{ items, onClick: handleMenuClick }}
+          trigger={['click']}
+          placement="bottomLeft"
+        >
+          <Button type="text" className={styles.selector}>
+            {currentLabel} <DownOutlined />
+          </Button>
+        </Dropdown>
+      )}
     </div>
   );
 };

@@ -92,3 +92,36 @@ export const getColumns = (props: ColumnsProps<TaskInfo>) => {
     },
   ];
 };
+
+export const AuditNameMap = [
+  {
+    key: 'clue_id',
+    name: '工单号',
+    width: 40,
+  },
+  {
+    key: 'level',
+    name: '事故评级',
+    width: 10,
+  },
+  {
+    key: 'status.name',
+    name: '线索状态',
+    width: 15,
+  },
+  {
+    key: 'sn',
+    name: '设备号',
+    width: 20,
+  },
+  {
+    key: 'create_time',
+    name: '审核通过时间',
+    width: 20,
+  },
+  {
+    key: 'handler_name',
+    name: '处理人',
+    width: 15,
+  },
+];

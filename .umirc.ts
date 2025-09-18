@@ -17,6 +17,12 @@ export default defineConfig({
       component: './Home',
     },
     {
+      path: '/dashboard',
+      name: '数据看板',
+      component: './Dashboard',
+      access: 'isAdmin',
+    },
+    {
       name: '首页',
       path: '/home',
       component: './Home',
@@ -71,8 +77,8 @@ export default defineConfig({
     '/api': {
       // 标识需要进行转换的请求的url
       // target: 'http://192.168.8.232:8888',
-      target: 'https://eda-store-test.ai-kaka.com:443',
-      // target: 'https://eda-store-backend.ai-kaka.com:443', // 服务端域名
+      // target: 'https://eda-store-test.ai-kaka.com:443',
+      target: 'https://s.ai-kaka.com:443', // 服务端域名
       changeOrigin: true, // 允许域名进行转换
     },
   },

@@ -1,6 +1,9 @@
+import { ResponseInfoType } from '@/types/common';
+import { createXlsxFile } from '@/utils/downloadXlsx';
+import { fetchAllPaginatedData } from '@/utils/request';
 import { PageContainer } from '@ant-design/pro-components';
 import type { TableProps } from 'antd';
-import { Button, Form, Row, Space, Table } from 'antd';
+import { Button, Form, Row, Space, Table, message } from 'antd';
 import React, {
   forwardRef,
   useCallback,
@@ -31,6 +34,13 @@ interface BaseListPageProps<T = any, U = any> {
   };
   extraButtons?: React.ReactNode;
   isOffset?: boolean;
+  exportConfig?: {
+    fileName?: string;
+    fetchAllData?: (params: U) => Promise<ResponseInfoType<any>>;
+    responseKey?: string;
+    useOffset?: boolean;
+    keyAndNames?: any[];
+  };
 }
 
 export interface BaseListPageRef {
@@ -55,6 +65,7 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
       createButton,
       extraButtons,
       isOffset = false,
+      exportConfig,
     } = props;
 
     const [loading, setLoading] = useState(false);
@@ -65,6 +76,7 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
       total: 0,
     });
     const [form] = Form.useForm();
+    const [exportLoading, setExportLoading] = useState(false);
 
     const fetchTableData = useCallback(
       async (params: { page: number; limit: number } & any) => {
@@ -143,6 +155,43 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
       [fetchTableData, form],
     );
 
+    const handleExportExcel = useCallback(async () => {
+      if (!exportConfig?.fetchAllData) {
+        message.warning('未配置导出功能');
+        return;
+      }
+
+      setExportLoading(true);
+      try {
+        let formValues = form.getFieldsValue();
+        if (searchParamsTransform) {
+          formValues = searchParamsTransform(formValues);
+        }
+
+        const allData = await fetchAllPaginatedData(
+          exportConfig.fetchAllData,
+          formValues,
+          {
+            responseKey: exportConfig.responseKey || 'record_list',
+            useOffset: exportConfig.useOffset || false,
+          },
+        );
+
+        createXlsxFile({
+          data: allData,
+          fileName: exportConfig.fileName || '导出数据.xlsx',
+          keyAndNames: exportConfig?.keyAndNames || [],
+        });
+
+        message.success(`成功导出 ${allData.length} 条数据`);
+      } catch (error) {
+        console.error('导出失败:', error);
+        message.error('导出失败，请重试');
+      } finally {
+        setExportLoading(false);
+      }
+    }, [columns, exportConfig, form, searchParamsTransform]);
+
     useImperativeHandle(ref, () => ({
       getData: () => {
         let formValues = form.getFieldsValue();
@@ -198,6 +247,15 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
             >
               刷新
             </Button>
+            {exportConfig && (
+              <Button
+                type="default"
+                loading={exportLoading}
+                onClick={handleExportExcel}
+              >
+                导出Excel
+              </Button>
+            )}
             {extraButtons}
           </Space>
         </div>

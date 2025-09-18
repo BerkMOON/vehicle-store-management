@@ -5,7 +5,7 @@ import { DeviceAPI } from '@/services/device/DeviceController';
 import { Navigate, useAccess } from '@umijs/max';
 import { Result } from 'antd';
 import React, { useRef } from 'react';
-import { getColumns } from './colums';
+import { DeviceNameMap, getColumns } from './colums';
 import { searchForm } from './searchForm';
 
 const TableList: React.FC = () => {
@@ -50,6 +50,12 @@ const TableList: React.FC = () => {
         searchFormItems={searchForm}
         searchParamsTransform={searchParamsTransform}
         fetchData={fetchUserData}
+        exportConfig={{
+          fileName: '设备列表.xlsx',
+          fetchAllData: DeviceAPI.getDeviceList, // 你的API函数
+          responseKey: 'device_list',
+          keyAndNames: DeviceNameMap,
+        }}
         defaultSearchParams={{
           store_id: 1,
         }}

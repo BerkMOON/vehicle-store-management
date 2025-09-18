@@ -4,7 +4,7 @@ import BaseListPage, {
 import { DeviceAPI } from '@/services/device/DeviceController';
 import { Navigate, useAccess } from '@umijs/max';
 import React, { useRef } from 'react';
-import { getColumns } from './colums';
+import { getColumns, UnusedDeviceNameMap } from './colums';
 import { searchForm } from './searchForm';
 
 const TableList: React.FC = () => {
@@ -33,6 +33,12 @@ const TableList: React.FC = () => {
         columns={columns}
         fetchData={fetchUserData}
         searchFormItems={searchForm}
+        exportConfig={{
+          fileName: '未上线设备列表.xlsx',
+          fetchAllData: DeviceAPI.getUnusedDeviceList, // 你的API函数
+          responseKey: 'record_list',
+          keyAndNames: UnusedDeviceNameMap,
+        }}
         defaultSearchParams={{
           before_days: 10,
         }}

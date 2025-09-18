@@ -1,10 +1,13 @@
 // 运行时配置
 import { Button, Result } from 'antd';
+import dayjs from 'dayjs';
+import isoWeek from 'dayjs/plugin/isoWeek';
 import Login from './components/BasicComponents/Login/Login';
 import iconPng from './favicon.jpeg';
 import { UserInfo } from './services/user/typings';
 import { UserAPI } from './services/user/UserController';
 
+dayjs.extend(isoWeek);
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState(): Promise<
@@ -30,6 +33,23 @@ export async function getInitialState(): Promise<
             storeName: firstRole.store_name,
           };
           localStorage.setItem('currentStore', JSON.stringify(defaultStore));
+        } else {
+          const parsed = JSON.parse(saved);
+          const match = data.role_list.find(
+            (role) =>
+              role.company_id === parsed.companyId &&
+              role.store_id === parsed.storeId,
+          );
+          if (!match) {
+            const firstRole = data.role_list[0];
+            const defaultStore = {
+              companyId: firstRole.company_id,
+              companyName: firstRole.company_name,
+              storeId: firstRole.store_id,
+              storeName: firstRole.store_name,
+            };
+            localStorage.setItem('currentStore', JSON.stringify(defaultStore));
+          }
         }
       }
       return { ...data, isLogin: true };

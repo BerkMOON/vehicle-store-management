@@ -4,7 +4,7 @@ import BaseListPage, {
 import { DeviceAPI } from '@/services/device/DeviceController';
 import { Navigate, useAccess } from '@umijs/max';
 import React, { useRef } from 'react';
-import { getColumns } from './colums';
+import { getColumns, MileageNameMap } from './colums';
 import { searchForm } from './searchForm';
 
 const TableList: React.FC = () => {
@@ -43,6 +43,12 @@ const TableList: React.FC = () => {
         searchFormItems={searchForm}
         searchParamsTransform={searchParamsTransform}
         fetchData={fetchUserData}
+        exportConfig={{
+          fileName: '里程提醒列表.xlsx',
+          fetchAllData: DeviceAPI.getMileageReminder, // 你的API函数
+          responseKey: 'item_list',
+          keyAndNames: MileageNameMap,
+        }}
       />
     </>
   );

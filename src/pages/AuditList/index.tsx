@@ -8,7 +8,7 @@ import { AuditAPI } from '@/services/audit/AuditController';
 import type { ListRequest, TaskInfo } from '@/services/audit/typings';
 import { Navigate, useAccess } from '@umijs/max';
 import React, { useRef, useState } from 'react';
-import { getColumns } from './colums';
+import { AuditNameMap, getColumns } from './colums';
 import { AcceptForm, FollowForm } from './opreatorForm';
 import { searchForm } from './searchForm';
 
@@ -79,6 +79,13 @@ const AuditList: React.FC = () => {
         fetchData={fetchClueData}
         defaultSearchParams={DEFAULT_SEARCH_PARAMS}
         searchParamsTransform={searchParamsTransform}
+        exportConfig={{
+          fileName: '事故列表.xlsx',
+          fetchAllData: AuditAPI.getTaskList,
+          responseKey: 'task_list',
+          useOffset: true,
+          keyAndNames: AuditNameMap,
+        }}
         isOffset={true}
       />
       <CreateOrModifyForm
