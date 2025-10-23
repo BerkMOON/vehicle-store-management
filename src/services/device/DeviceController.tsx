@@ -8,6 +8,7 @@ import type {
   LossResponse,
   MileageReminderRequest,
   MileageReminderResponse,
+  OldDeviceResponse,
   UnusedDeviceResponse,
 } from './typings';
 
@@ -70,4 +71,44 @@ export const DeviceAPI = {
         params,
       },
     ),
+
+  /**
+   * 未升级设备列表
+   * GET /api/business/device/unused/listNotUpdated/
+   * 接口ID：364800230
+   * 接口地址：https://app.apifox.com/link/project/5084807/apis/api-364800230
+   */
+  getOldDeviceList: (params?: PageInfoParams) =>
+    request<ResponseInfoType<OldDeviceResponse>>(
+      `${API_PREFIX}/unused/listNotUpdated`,
+      {
+        method: 'GET',
+        params,
+      },
+    ),
+
+  /**
+   * 查询有效设备标记
+   * GET /api/business/device/call/mark/list
+   * 接口ID：364802799
+   * 接口地址：https://app.apifox.com/link/project/5084807/apis/api-364802799
+   */
+  getCallMarkList: () =>
+    request<
+      ResponseInfoType<{ mark_list: { sn: string; expire_time: string }[] }>
+    >(`${API_PREFIX}/call/mark/list`, {
+      method: 'GET',
+    }),
+
+  /**
+   * 创建设备标记
+   * POST /api/business/device/call/mark/create
+   * 接口ID：364801552
+   * 接口地址：https://app.apifox.com/link/project/5084807/apis/api-364801552
+   */
+  createCallMark: (params: { sn: string; expire_time: string }) =>
+    request<ResponseInfoType<null>>(`${API_PREFIX}/call/mark/create`, {
+      method: 'POST',
+      data: params,
+    }),
 };

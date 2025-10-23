@@ -40,6 +40,8 @@ interface BaseListPageProps<T = any, U = any> {
     responseKey?: string;
     useOffset?: boolean;
     keyAndNames?: any[];
+    // 是否使用自定义导出（直接返回数据，不使用 fetchAllPaginatedData）
+    customExport?: boolean;
   };
 }
 
@@ -168,14 +170,24 @@ const BaseListPage = forwardRef<BaseListPageRef, BaseListPageProps>(
           formValues = searchParamsTransform(formValues);
         }
 
-        const allData = await fetchAllPaginatedData(
-          exportConfig.fetchAllData,
-          formValues,
-          {
-            responseKey: exportConfig.responseKey || 'record_list',
-            useOffset: exportConfig.useOffset || false,
-          },
-        );
+        let allData: any[] = [];
+
+        // 如果是自定义导出，直接调用 fetchAllData 获取数据
+        if (exportConfig.customExport) {
+          const response = await exportConfig.fetchAllData(formValues);
+          const responseKey = exportConfig.responseKey || 'record_list';
+          allData = response.data?.[responseKey] || [];
+        } else {
+          // 使用标准的分页数据获取方式
+          allData = await fetchAllPaginatedData(
+            exportConfig.fetchAllData,
+            formValues,
+            {
+              responseKey: exportConfig.responseKey || 'record_list',
+              useOffset: exportConfig.useOffset || false,
+            },
+          );
+        }
 
         createXlsxFile({
           data: allData,

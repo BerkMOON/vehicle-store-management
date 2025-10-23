@@ -71,14 +71,20 @@ export default defineConfig({
       component: './UnusedDevice',
       access: 'isAdmin',
     },
+    {
+      path: '/old-device',
+      name: '旧版本设备',
+      component: './OldDevice',
+      access: 'isAdmin',
+    },
   ],
   npmClient: 'pnpm',
   proxy: {
     '/api': {
       // 标识需要进行转换的请求的url
       // target: 'http://192.168.8.232:8888',
-      // target: 'https://eda-store-test.ai-kaka.com:443',
-      target: 'https://s.ai-kaka.com:443', // 服务端域名
+      target: 'https://eda-store-test.ai-kaka.com:443',
+      // target: 'https://s.ai-kaka.com:443', // 服务端域名
       changeOrigin: true, // 允许域名进行转换
     },
   },
